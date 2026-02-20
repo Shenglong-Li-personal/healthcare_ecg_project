@@ -41,17 +41,7 @@ healthcare_ecg_project/
 pip install -r requirements.txt
 ```
 
-### 2. Set Your Anthropic API Key (for the LLM assistant)
 
-```bash
-# Linux/Mac
-export ANTHROPIC_API_KEY="your-key-here"
-
-# Windows
-set ANTHROPIC_API_KEY=
-```
-
-Get a free API key at: https://console.anthropic.com
 
 ### 3. Train the Models
 
