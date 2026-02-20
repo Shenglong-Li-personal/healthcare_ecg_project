@@ -48,7 +48,7 @@ pip install -r requirements.txt
 export ANTHROPIC_API_KEY="your-key-here"
 
 # Windows
-set ANTHROPIC_API_KEY=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
+set ANTHROPIC_API_KEY=
 ```
 
 Get a free API key at: https://console.anthropic.com
