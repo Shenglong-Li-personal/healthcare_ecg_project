@@ -1,4 +1,5 @@
 
+
 # Virtual environments
 .venv/
 venv/
@@ -51,3 +52,18 @@ data/raw/
 *.npy
 *.npz
 
+=======
+venv/
+.venv/
+env/
+ENV/
+
+__pycache__/
+*.pyc
+
+.vscode/
+.idea/
+
+data/raw/
+*.npy
+*.pth
