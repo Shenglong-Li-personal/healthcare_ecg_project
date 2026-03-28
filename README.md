@@ -12,13 +12,10 @@ It supports both synthetic demo data and real PTB-XL ECG data.
 
 ```text
 healthcare_ecg_project/
-├── scripts/
-│   ├── setup_ptbxl.sh
-│   └── train_ptbxl_models.sh
 ├── data/
 │   ├── __init__.py
 │   ├── data_loader.py
-│   └── ptb-xl/              # downloaded via setup script
+│   └── ptb-xl/              # downloaded via Kaggle
 ├── models/
 │   ├── __init__.py
 │   ├── cnn_model.py
@@ -79,7 +76,7 @@ pip install -r requirements.txt
 
 ### 4. Optional: install Kaggle CLI
 
-This is only needed if you want to use the PTB-XL automation scripts.
+This is only needed if you want to download the PTB-XL dataset.
 
 ```bash
 pip install kaggle
@@ -114,7 +111,7 @@ In the app, choose **Use demo patient (synthetic)**.
 
 #### Step 1. Configure Kaggle access
 
-Do this once before running the PTB-XL setup script.
+Do this once before downloading the PTB-XL dataset.
 
 1. Create or sign in to your Kaggle account:
    - https://www.kaggle.com/
@@ -193,45 +190,18 @@ If that works, Kaggle is configured correctly.
 
 #### Step 2. Download and prepare PTB-XL
 
-**macOS / Linux**
 ```bash
-bash scripts/setup_ptbxl.sh
+kaggle datasets download khyeh0719/ptb-xl-dataset -p data/ptb-xl --unzip
 ```
 
-**Windows (PowerShell)**
-
-The setup script requires bash. You can either run it through Git Bash, or download the dataset manually:
-
-```powershell
-kaggle datasets download khyeh0719/ptb-xl-dataset -p data\ptb-xl --unzip
-```
-
-If the download creates a nested subfolder, move the contents so that `data\ptb-xl\ptbxl_database.csv` exists at that path.
-
-By default this downloads:
-- `khyeh0719/ptb-xl-dataset`
-
-and prepares it at:
-- `./data/ptb-xl`
-
-If that folder is already correctly set up, the script skips the download.
+If the download creates a nested subfolder, move the contents so that `data/ptb-xl/ptbxl_database.csv` exists at that path.
 
 #### Step 3. Train both real-data models
 
-**macOS / Linux**
 ```bash
-bash scripts/train_ptbxl_models.sh
+python train_cnn.py --real-data --ptbxl-dir ./data/ptb-xl --sampling-rate 100
+python train_lstm.py --real-data --ptbxl-dir ./data/ptb-xl --sampling-rate 100 --seq-len 3 --selection-metric balanced_acc --threshold-metric balanced_acc
 ```
-
-**Windows (PowerShell)**
-```powershell
-python train_cnn.py --real-data --ptbxl-dir .\data\ptb-xl --sampling-rate 100
-python train_lstm.py --real-data --ptbxl-dir .\data\ptb-xl --sampling-rate 100 --seq-len 3 --selection-metric balanced_acc --threshold-metric balanced_acc
-```
-
-This runs:
-- CNN training on PTB-XL
-- LSTM training on PTB-XL with the improved balanced-metric pipeline
 
 #### Step 4. Launch the app
 
@@ -244,40 +214,19 @@ In the app:
 2. set the PTB-XL folder to `./data/ptb-xl`
 3. use **Minimum visits required for LSTM = 3** for more meaningful temporal plots
 
-## Manual Commands
-
-Use these if you want to run each stage yourself instead of using the automation scripts.
-
-### Train CNN on PTB-XL
-
-```bash
-python train_cnn.py --real-data --ptbxl-dir ./data/ptb-xl --sampling-rate 100
-```
-
-### Train LSTM on PTB-XL
-
-```bash
-python train_lstm.py --real-data --ptbxl-dir ./data/ptb-xl --sampling-rate 100 --seq-len 3
-```
-
-The current LSTM pipeline includes:
-- feature standardization
-- class-weighted loss
-- threshold tuning
-- balanced checkpoint selection
-
-### Custom paths
+## Custom Paths
 
 Download to a custom folder:
 
 ```bash
-bash scripts/setup_ptbxl.sh khyeh0719/ptb-xl-dataset /path/to/ptb-xl
+kaggle datasets download khyeh0719/ptb-xl-dataset -p /path/to/ptb-xl --unzip
 ```
 
 Train from a custom folder:
 
 ```bash
-bash scripts/train_ptbxl_models.sh /path/to/ptb-xl 100 3
+python train_cnn.py --real-data --ptbxl-dir /path/to/ptb-xl --sampling-rate 100
+python train_lstm.py --real-data --ptbxl-dir /path/to/ptb-xl --sampling-rate 100 --seq-len 3 --selection-metric balanced_acc --threshold-metric balanced_acc
 ```
 
 ## Notes on PTB-XL in This Project
@@ -297,9 +246,6 @@ bash scripts/train_ptbxl_models.sh /path/to/ptb-xl 100 3
   - Make sure `kaggle` is installed.
   - Make sure your Kaggle token is configured.
   - If you get a `403` error, open the dataset page in your browser and accept the dataset terms once.
-
-- **`setup_ptbxl.sh` says the output folder is not empty**
-  - Move or remove the existing folder contents, or use a different output path.
 
 - **PTB-XL mode in the app shows weak temporal plots**
   - Many PTB-XL patients only have one usable visit.
