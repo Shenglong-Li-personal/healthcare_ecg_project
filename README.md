@@ -225,8 +225,8 @@ bash scripts/train_ptbxl_models.sh
 
 **Windows (PowerShell)**
 ```powershell
-python train_cnn.py --real-data --ptbxl-dir ./data/ptb-xl --sampling-rate 100
-python train_lstm.py --real-data --ptbxl-dir ./data/ptb-xl --sampling-rate 100 --seq-len 3
+python train_cnn.py --real-data --ptbxl-dir .\data\ptb-xl --sampling-rate 100
+python train_lstm.py --real-data --ptbxl-dir .\data\ptb-xl --sampling-rate 100 --seq-len 3 --selection-metric balanced_acc --threshold-metric balanced_acc
 ```
 
 This runs:
