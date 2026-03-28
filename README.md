@@ -16,8 +16,10 @@ healthcare_ecg_project/
 │   ├── setup_ptbxl.sh
 │   └── train_ptbxl_models.sh
 ├── data/
+│   ├── __init__.py
 │   └── data_loader.py
 ├── models/
+│   ├── __init__.py
 │   ├── cnn_model.py
 │   ├── lstm_model.py
 │   └── llm_assistant.py
@@ -26,6 +28,7 @@ healthcare_ecg_project/
 ├── train_lstm.py
 ├── app.py
 ├── requirements.txt
+├── .env.example
 └── .gitignore
 ```
 
